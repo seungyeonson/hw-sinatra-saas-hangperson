@@ -26,11 +26,15 @@ class HangpersonApp < Sinatra::Base
   end
   
   post '/create' do
+    flash[:message] = ''
+    flash[:wrong_guesses] = ''
+    flash[:word_with_guesses] = ''
     # NOTE: don't change next line - it's needed by autograder!
     word = params[:word] || HangpersonGame.get_random_word
     # NOTE: don't change previous line - it's needed by autograder!
 
     @game = HangpersonGame.new(word)
+    session[:game] =@game
     redirect '/show'
   end
   
@@ -40,8 +44,23 @@ class HangpersonApp < Sinatra::Base
   post '/guess' do
     letter = params[:guess].to_s[0]
     ### YOUR CODE HERE ###
-    redirect '/show'
+    if @game.guess(letter) == false
+      flash[:message] = "You have already used that letter"
+    elsif @game.wrong_guesses.include? letter
+      flash[:message] = "Invalid guess"
+    end
+    
+    flash[:wrong_guesses] = @game.wrong_guesses
+    flash[:word_with_guesses] = @game.word_with_guesses
+    if @game.check_win_or_lose == :win
+        redirect '/win'
+     elsif @game.check_win_or_lose == :play 
+        redirect '/show'
+     elsif @game.check_win_or_lose == :lose
+        redirect 'lose'
+     end
   end
+
   
   # Everytime a guess is made, we should eventually end up at this route.
   # Use existing methods in HangpersonGame to check if player has
