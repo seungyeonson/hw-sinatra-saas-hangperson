@@ -47,19 +47,19 @@ class HangpersonApp < Sinatra::Base
       letter = params[:guess].to_s[0] || ''
       ### YOUR CODE HERE ###
       if !@game.guess(letter)
-        flash[:message] = "You have already used that letter"
+        flash[:message] = "You have already used that letter."
       elsif @game.wrong_guesses.include? letter
-        flash[:message] = "Invalid guess"
+        flash[:message] = "Invalid guess."
       end
     
     flash[:wrong_guesses] = @game.wrong_guesses
     flash[:word_with_guesses] = @game.word_with_guesses
     if @game.check_win_or_lose == :win
-        redirect '/win'
+        redirect '/show'
     elsif @game.check_win_or_lose == :play 
         redirect '/show'
     elsif @game.check_win_or_lose == :lose
-        redirect '/lose'
+        redirect '/show'
     end
     rescue ArgumentError
       flsh[:message] = "Your input was invalid"
