@@ -34,7 +34,6 @@ class HangpersonApp < Sinatra::Base
     # NOTE: don't change previous line - it's needed by autograder!
 
     @game = HangpersonGame.new(word)
-    session[:game] =@game
     redirect '/show'
   end
   
@@ -42,13 +41,16 @@ class HangpersonApp < Sinatra::Base
   # If a guess is repeated, set flash[:message] to "You have already used that letter."
   # If a guess is invalid, set flash[:message] to "Invalid guess."
   post '/guess' do
-    letter = params[:guess].to_s[0]
-    ### YOUR CODE HERE ###
-    if @game.guess(letter) == false
-      flash[:message] = "You have already used that letter"
-    elsif @game.wrong_guesses.include? letter
-      flash[:message] = "Invalid guess"
-    end
+    
+    # handle error
+    begin
+      letter = params[:guess].to_s[0] || ''
+      ### YOUR CODE HERE ###
+      if !@game.guess(letter)
+        flash[:message] = "You have already used that letter"
+      elsif @game.wrong_guesses.include? letter
+        flash[:message] = "Invalid guess"
+      end
     
     flash[:wrong_guesses] = @game.wrong_guesses
     flash[:word_with_guesses] = @game.word_with_guesses
@@ -57,7 +59,11 @@ class HangpersonApp < Sinatra::Base
     elsif @game.check_win_or_lose == :play 
         redirect '/show'
     elsif @game.check_win_or_lose == :lose
-        redirect 'lose'
+        redirect '/lose'
+    end
+    rescue ArgumentError
+      flsh[:message] = "Your input was invalid"
+      redirect '/show'
     end
   end
 
