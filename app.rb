@@ -55,11 +55,11 @@ class HangpersonApp < Sinatra::Base
     flash[:wrong_guesses] = @game.wrong_guesses
     flash[:word_with_guesses] = @game.word_with_guesses
     if @game.check_win_or_lose == :win
-        redirect '/show'
+        redirect '/win'
     elsif @game.check_win_or_lose == :play 
         redirect '/show'
     elsif @game.check_win_or_lose == :lose
-        redirect '/show'
+        redirect '/lose'
     end
     rescue ArgumentError
       flsh[:message] = "Your input was invalid"
