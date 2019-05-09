@@ -44,6 +44,7 @@ Then /^the wrong guesses should include:(.*)$/ do |guesses|
 end
 
 When /^I guess "(.*)" (.*) times in a row$/ do |letter, num|
+  letter=letter || ""
   letter.downcase!
   num.to_i.times do
     fill_in("guess", :with => letter)
