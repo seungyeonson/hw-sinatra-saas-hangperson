@@ -32,7 +32,7 @@ class HangpersonApp < Sinatra::Base
     # NOTE: don't change next line - it's needed by autograder!
     word = params[:word] || HangpersonGame.get_random_word
     # NOTE: don't change previous line - it's needed by autograder!
-
+    
     @game = HangpersonGame.new(word)
     redirect '/show'
   end
@@ -44,11 +44,15 @@ class HangpersonApp < Sinatra::Base
     
     # handle error
     begin
-      letter = params[:guess].to_s[0] || ''
+      
+      letter = params[:guess].to_s[0] || ""
       ### YOUR CODE HERE ###
+      
       if !@game.guess(letter)
         flash[:message] = "You have already used that letter."
       elsif @game.wrong_guesses.include? letter
+        flash[:message] = "Invalid guess."
+      elsif letter == ""
         flash[:message] = "Invalid guess."
       end
     
