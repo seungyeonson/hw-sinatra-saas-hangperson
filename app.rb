@@ -54,11 +54,11 @@ class HangpersonApp < Sinatra::Base
     flash[:word_with_guesses] = @game.word_with_guesses
     if @game.check_win_or_lose == :win
         redirect '/win'
-     elsif @game.check_win_or_lose == :play 
+    elsif @game.check_win_or_lose == :play 
         redirect '/show'
-     elsif @game.check_win_or_lose == :lose
+    elsif @game.check_win_or_lose == :lose
         redirect 'lose'
-     end
+    end
   end
 
   
