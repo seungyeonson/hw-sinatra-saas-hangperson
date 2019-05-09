@@ -60,6 +60,8 @@ class HangpersonApp < Sinatra::Base
         redirect '/show'
     elsif @game.check_win_or_lose == :lose
         redirect '/lose'
+    else
+      redirect '/show'
     end
     rescue ArgumentError
       flsh[:message] = "Your input was invalid"
