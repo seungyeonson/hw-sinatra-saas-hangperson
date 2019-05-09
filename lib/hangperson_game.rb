@@ -17,9 +17,7 @@ class HangpersonGame
   attr_accessor :word, :guesses, :wrong_guesses
   
   def guess(letter)
-    if letter == nil || !(letter.class ==String && letter =~ /^[A-z]$/i)
-      raise ArgumentError
-    end
+    raise ArgumentError if (letter.to_s == '') or !(letter =~ /[[:alpha:]]/ ) or (letter.to_s == ' ')
     letter.downcase!
     
     if @guesses.include?(letter) || @wrong_guesses.include?(letter)
